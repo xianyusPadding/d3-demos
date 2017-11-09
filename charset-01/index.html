@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>charset01</title>
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+
+<body>
+  <!--1. <p>hello world!</p> -->
+  <!--2. <p>apple</p>
+  <p>pear</p>
+  <p>banana</p> -->
+  <!--3. <p>Apple</p>
+  <p id="myid">Pear</p>
+  <p>Banana</p> -->
+
+
+
+
+
+
+  <script>
+    //1. select()和selectAll()选择器
+    // d3.select('body').selectAll('p').text('hello d3.js') // d3.select()：是选择所有指定元素的第一个。d3.selectAll()：是选择指定元素的全部
+
+    //2. datum()和data()数据绑定
+    // var str = 'china',            
+    //     dataset = ['dog', 'cat', 'snake'],
+    //     body = d3.select('body'),
+    //     p = body.selectAll('p')
+
+    // p.datum(str)           //datum()：绑定一个数据到选择集上。
+    //   .text(function (value, index) {
+    //   return '第' + index + '个元素绑定的数据是' + value
+    // })
+
+    // p.data(dataset)        //data()：绑定一个数组到选择集上，数组的各项值分别与选择集的各元素绑定
+    //   .text(function (value, index) {
+    //     return '第' + index + '个元素绑定的数据是' + value
+    //   })
+
+    //3. 选择，插入，删除
+    // var body = d3.select('body')  //select()返回的是第一个 p 元素。可用id、class进行选择
+    // var p1 = body.select('p')
+    // p1.style('color', 'red')
+
+    // var p = body.selectAll("p");    //selectAll()选择 body 中所有的 p 元素。
+    // p.style("color","red");
+
+    // body.append('p').text('append p element')  //append()：在选择集末尾插入元素
+
+    // body.insert('p', '#myid').text('insert p element') //insert()：在选择集前面插入元素
+
+    // var p = body.select('#myid') //删除元素使用 remove
+    // p.remove()
+
+    //4. 添加画布(svg)、绘制矩形
+    // var width = 300,
+    //     height = 400
+    //     svg = d3.select('body')
+    //             .append('svg')
+    //             .attr('width', width)
+    //             .attr('height', height)
+    //             .style('background', '#eee')
+    
+    // var dataset = [250, 210, 170, 130, 90],
+    //     rectHeight = 25
+
+    // svg.selectAll('rect')
+    //     .data(dataset)
+    //     .enter()            //指定选择集的enter部分
+    //     .append('rect')     //添加足够数量的矩形元素
+    //     .attr('x', 20)      //x是横坐标
+    //     .attr('y', function(value, index){  //y是纵坐标
+    //       return index * rectHeight
+    //     })
+    //     .attr('width', function(value){     //矩形的width
+    //       return value
+    //     })
+    //     .attr('height', rectHeight - 2)     //矩形的height
+    //     .attr('fill', 'steelblue')          //填充颜色
+
+    // 5. 线性比例尺、序数比例尺、给柱形图添加比例尺
+    // 线性比例尺
+    // var dataset = [1.2, 2.3, 0.9, 1.5, 3.3],
+    //     min = d3.min(dataset),
+    //     max = d3.max(dataset),
+    //     linear = d3.scale.linear()
+    //                .domain([min, max])    //将 dataset 中最小的值，映射成 0；将最大的值，映射成 300。
+    //                .range([0, 300])       //d3.scale.linear() 返回一个线性比例尺。domain() 和 range() 分别设定比例尺的定义域和值域。
+
+    // console.log(linear(0.9) + ', ' + linear(2.3) + ', ' + linear(3.3))   //0, 175, 300
+    
+    // 序数比例尺
+    // var index = [0, 1, 2, 3, 4]
+    //     color = ['red', 'blue', 'green', 'yellow', 'black'],
+    //     ordinal = d3.scale.ordinal()        //我们希望 0 对应颜色 red，1 对应 blue，依次类推。
+    //                 .domain(index)          //这些值都是离散的，线性比例尺不适合，需要用到序数比例尺。
+    //                 .range(color)
+
+    // console.log(ordinal(0) + ', ' + ordinal(2) + ', ' + ordinal(3))      //red, green, yellow
+
+    // 给柱形图添加比例尺
+    var dataset = [ 2.5 , 2.1 , 1.7 , 1.3 , 0.9 ],
+        linear = d3.scale.linear()
+                    .domain([0, d3.max(dataset)])
+                    .range([0, 250])
+    
+    var rectHeight = 25,
+        svg = d3.select('body')
+                .append('svg')
+
+    svg.selectAll('rect')
+       .data(dataset)
+       .enter()
+       .append('rect')
+       .attr('x', 20)
+       .attr('y', function(value, index){
+         return index * rectHeight
+       })
+       .attr('width', function(value){
+         return linear(value)
+       })
+       .attr('height', rectHeight - 2)
+       .attr('fill', 'steelblue')
+  </script>
+</body>
+
+</html>
